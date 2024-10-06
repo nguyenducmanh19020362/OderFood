@@ -1,4 +1,4 @@
-package com.project.OrderFood
+package com.project.order
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
