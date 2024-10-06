@@ -16,6 +16,11 @@ import java.util.*
 
 @Component
 class JwtTokenProvider {
+
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
+    }
+
     @Value("\${jwt.secret}")
     private val jwtSecret: String? = null
 
@@ -57,9 +62,5 @@ class JwtTokenProvider {
 
         val verified = signedJWT.verify(verifier)
         return verified && expiration.after(Date())
-    }
-
-    companion object {
-        private val log: Logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
     }
 }
