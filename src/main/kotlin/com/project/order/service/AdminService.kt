@@ -1,5 +1,6 @@
 package com.project.order.service
 
+import com.project.order.constant.Const.Role
 import com.project.order.constant.Const.StateResponse
 import com.project.order.data.Admin
 import com.project.order.dto.request.AdminRequestDto
@@ -7,6 +8,7 @@ import com.project.order.dto.response.AdminResponseDto
 import com.project.order.jwt.JwtTokenProvider
 import com.project.order.responsitory.AdminRepository
 import com.project.order.service.base.BaseService
+import com.project.order.utils.HandleString
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,7 +21,10 @@ class AdminService(
         val users: List<Admin> = adminRepository.findByUsername(adminRequestDto.username)
         var token = ""
         if (users.isNotEmpty() && users[0].password == adminRequestDto.password) {
-            token = jwtTokenProvider.generateJWTToken(users[0].username)
+            token = jwtTokenProvider.generateJWTToken(
+                users[0].username,
+                users[0].role.joinToString(" ")
+            )
             return AdminResponseDto(token, StateResponse.SUCCESS)
         }
 
@@ -33,14 +38,22 @@ class AdminService(
         if (users.isEmpty()) {
             val newAdmin = Admin(
                 username = adminRequestDto.username,
-                password = adminRequestDto.password
+                password = adminRequestDto.password,
+                role = setOf(Role.ADMIN.name)
             )
 
             adminRepository.insert(newAdmin)
-            token = jwtTokenProvider.generateJWTToken(newAdmin.username)
+            token = jwtTokenProvider.generateJWTToken(
+                newAdmin.username,
+                newAdmin.role.joinToString(" ")
+            )
             return AdminResponseDto(token, StateResponse.SUCCESS)
         }
 
         return AdminResponseDto(token, StateResponse.FAIL)
+    }
+
+    fun randomNumber(): String {
+        return HandleString.randomNumber()
     }
 }

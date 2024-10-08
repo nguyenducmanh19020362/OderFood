@@ -2,7 +2,13 @@ package com.project.order.constant
 
 class Const {
     object StateResponse {
-        public final val SUCCESS = "success"
-        public final val FAIL = "fail"
+        public final const val SUCCESS = "success"
+        public final const val FAIL = "fail"
+    }
+
+    enum class Role {
+        CUSTOMER,
+        ADMIN,
+        OWN
     }
 }

@@ -27,7 +27,7 @@ class JwtTokenProvider {
     @Value("\${jwt.expiration}")
     private val jwtExpiration: String? = null
 
-    fun generateJWTToken(username: String?): String {
+    fun generateJWTToken(username: String, scope: String): String {
         val jwsHeader = JWSHeader((JWSAlgorithm.HS256))
 
         val jwtClaimsSet = JWTClaimsSet.Builder()
@@ -35,10 +35,9 @@ class JwtTokenProvider {
             .issuer("my.com")
             .issueTime(Date())
             .expirationTime(
-                Date(
-                    Instant.now().plus(jwtExpiration!!.toLong(), ChronoUnit.HOURS).toEpochMilli()
-                )
+                Date(Instant.now().plus(jwtExpiration!!.toLong(), ChronoUnit.HOURS).toEpochMilli())
             )
+            .claim("scope", scope)
             .build()
 
         val jwtPayload = Payload(jwtClaimsSet.toJSONObject())
