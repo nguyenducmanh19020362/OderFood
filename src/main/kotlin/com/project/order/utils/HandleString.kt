@@ -17,4 +17,7 @@ object HandleString {
         return randomNumber
     }
 
+    fun checkRandomNumber(randomNumber: String): Boolean {
+        return listRandom.remove(randomNumber)
+    }
 }

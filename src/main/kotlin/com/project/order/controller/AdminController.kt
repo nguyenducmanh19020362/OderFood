@@ -1,7 +1,9 @@
 package com.project.order.controller
 
 import com.project.order.dto.request.AdminRequestDto
+import com.project.order.dto.request.AuthenticationRequestDto
 import com.project.order.dto.response.AdminResponseDto
+import com.project.order.dto.response.AuthenticationResponseDto
 import com.project.order.dto.response.RandomNumberResponseDto
 import com.project.order.service.AdminService
 import lombok.RequiredArgsConstructor
@@ -30,6 +32,17 @@ class AdminController (
     @GetMapping("/random-number")
     fun randomNumber(): RandomNumberResponseDto {
         return RandomNumberResponseDto(adminService.randomNumber())
+    }
+
+    @PostMapping("/authentication")
+    fun getToken(@RequestBody authenticationRequestDto: AuthenticationRequestDto):
+            AuthenticationResponseDto {
+        val randomNumber = authenticationRequestDto.randomNumber
+        val token = adminService.generateToken(randomNumber)
+        return AuthenticationResponseDto(
+            token,
+            token.isNotEmpty()
+        )
     }
 
 }

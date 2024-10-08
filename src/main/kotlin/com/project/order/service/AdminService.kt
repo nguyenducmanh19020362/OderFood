@@ -56,4 +56,15 @@ class AdminService(
     fun randomNumber(): String {
         return HandleString.randomNumber()
     }
+
+    fun generateToken(randomNumber: String): String {
+        var token = ""
+        if (HandleString.checkRandomNumber(randomNumber)) {
+            token = jwtTokenProvider.generateJWTToken(
+                username = "none",
+                scope = Role.CUSTOMER.name
+            )
+        }
+        return token
+    }
 }
