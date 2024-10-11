@@ -1,4 +1,4 @@
-package com.project.order.responsitory
+package com.project.order.responsitory.base
 
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.repository.NoRepositoryBean
@@ -12,4 +12,8 @@ interface BaseRepository<T : Any, ID> : MongoRepository<T, ID> {
     override fun delete(entity: T)
 
     fun getById(id: ID): T
+
+    override fun <S : T> save(entity: S): S
+
+    override fun <S : T> saveAll(entities: MutableIterable<S>): MutableList<S>
 }

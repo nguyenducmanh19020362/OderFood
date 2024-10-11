@@ -8,7 +8,7 @@ import com.project.order.dto.response.AdminResponseDto
 import com.project.order.jwt.JwtTokenProvider
 import com.project.order.responsitory.AdminRepository
 import com.project.order.service.base.BaseService
-import com.project.order.utils.HandleString
+import com.project.order.utils.Extension
 import org.springframework.stereotype.Service
 
 @Service
@@ -42,7 +42,7 @@ class AdminService(
                 role = setOf(Role.ADMIN.name)
             )
 
-            adminRepository.insert(newAdmin)
+            adminRepository.save(newAdmin)
             token = jwtTokenProvider.generateJWTToken(
                 newAdmin.username,
                 newAdmin.role.joinToString(" ")
@@ -54,12 +54,12 @@ class AdminService(
     }
 
     fun randomNumber(): String {
-        return HandleString.randomNumber()
+        return Extension.randomNumber()
     }
 
     fun generateToken(randomNumber: String): String {
         var token = ""
-        if (HandleString.checkRandomNumber(randomNumber)) {
+        if (Extension.checkRandomNumber(randomNumber)) {
             token = jwtTokenProvider.generateJWTToken(
                 username = "none",
                 scope = Role.CUSTOMER.name

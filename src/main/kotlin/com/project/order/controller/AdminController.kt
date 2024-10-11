@@ -1,11 +1,13 @@
 package com.project.order.controller
 
+import com.project.order.data.Food
 import com.project.order.dto.request.AdminRequestDto
 import com.project.order.dto.request.AuthenticationRequestDto
 import com.project.order.dto.response.AdminResponseDto
 import com.project.order.dto.response.AuthenticationResponseDto
 import com.project.order.dto.response.RandomNumberResponseDto
 import com.project.order.service.AdminService
+import com.project.order.service.FoodService
 import lombok.RequiredArgsConstructor
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequiredArgsConstructor
 class AdminController (
-    private val adminService: AdminService
+    private val adminService: AdminService,
+    private val foodService: FoodService
 ){
     private val log = LoggerFactory.getLogger(this.javaClass)
     @PostMapping("/login")
@@ -39,7 +42,13 @@ class AdminController (
             AuthenticationResponseDto {
         val randomNumber = authenticationRequestDto.randomNumber
         val token = adminService.generateToken(randomNumber)
+        var listFoods = listOf<Food>()
+        if (token.isNotEmpty()) {
+            listFoods = foodService.getAllFoods()
+        }
+
         return AuthenticationResponseDto(
+            listFoods,
             token,
             token.isNotEmpty()
         )

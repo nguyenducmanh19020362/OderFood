@@ -5,8 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner
 import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.project.order.utils.LogUtil
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.text.ParseException
@@ -16,11 +15,6 @@ import java.util.*
 
 @Component
 class JwtTokenProvider {
-
-    companion object {
-        private val log: Logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
-    }
-
     @Value("\${jwt.secret}")
     private val jwtSecret: String? = null
 
@@ -45,10 +39,10 @@ class JwtTokenProvider {
 
         try {
             jwsObject.sign(MACSigner(jwtSecret))
-            log.debug("jws token: {}", jwsObject.serialize())
+            LogUtil.log.debug("jws token: {}", jwsObject.serialize())
             return jwsObject.serialize()
         } catch (e: JOSEException) {
-            log.error("Cannot create token", e)
+            LogUtil.log.error("Cannot create token", e)
             throw RuntimeException(e)
         }
     }
