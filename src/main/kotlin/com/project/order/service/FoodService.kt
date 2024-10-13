@@ -13,15 +13,9 @@ class FoodService(
     private var listFoodsCache = mutableListOf<Food>()
     val listFood: MutableList<Food>
         get() {
-            if (listFoodsCache.isEmpty()) listFoodsCache = foodRepository.findAll().toMutableList()
+            if (listFoodsCache.isEmpty()) listFoodsCache.addAll(foodRepository.findAll())
             return listFoodsCache
         }
-    private var mapCategoryFoodsCache= mutableMapOf<String, List<Food>>()
-
-    fun getAllFoods(): List<Food> {
-        if (listFoodsCache.isEmpty()) listFoodsCache.addAll(foodRepository.findAll())
-        return listFoodsCache
-    }
 
     fun addFood(newFood: Food): Boolean {
         try {
@@ -55,24 +49,5 @@ class FoodService(
         } catch (e: Exception) {
             return false
         }
-    }
-
-    fun getFoodByCategory(category: String): List<Food>? {
-        if (listFoodsCache.isEmpty()) {
-            return foodRepository.findByCategory(category)
-        }
-
-        if (mapCategoryFoodsCache.containsKey(category)) {
-            return mapCategoryFoodsCache[category]
-        }
-
-        val listFoodByCategory = mutableListOf<Food>()
-        for (food in listFoodsCache) {
-            if (food.category == category) {
-                listFoodByCategory.add(food)
-            }
-        }
-        mapCategoryFoodsCache[category] = listFoodByCategory
-        return listFoodByCategory
     }
 }
