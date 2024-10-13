@@ -44,7 +44,7 @@ class AdminController (
         val token = adminService.generateToken(randomNumber)
         var listFoods = listOf<Food>()
         if (token.isNotEmpty()) {
-            listFoods = foodService.getAllFoods()
+            listFoods = foodService.listFood
         }
 
         return AuthenticationResponseDto(

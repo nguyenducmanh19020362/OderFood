@@ -9,7 +9,13 @@ class FoodService(
     jwtTokenProvider: JwtTokenProvider,
     private val foodRepository: FoodRepository
 ): BaseService(jwtTokenProvider) {
+
     private var listFoodsCache = mutableListOf<Food>()
+    val listFood: MutableList<Food>
+        get() {
+            if (listFoodsCache.isEmpty()) listFoodsCache = foodRepository.findAll().toMutableList()
+            return listFoodsCache
+        }
     private var mapCategoryFoodsCache= mutableMapOf<String, List<Food>>()
 
     fun getAllFoods(): List<Food> {
@@ -17,9 +23,9 @@ class FoodService(
         return listFoodsCache
     }
 
-    fun saveFood(newFood: Food): Boolean {
+    fun addFood(newFood: Food): Boolean {
         try {
-            foodRepository.save(newFood)
+            foodRepository.insert(newFood)
             if (listFoodsCache.isNotEmpty()) listFoodsCache.add(newFood)
             return true
         } catch (e: Exception) {
@@ -31,6 +37,20 @@ class FoodService(
         try {
             foodRepository.delete(food)
             if (listFoodsCache.isNotEmpty()) listFoodsCache.remove(food)
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    fun updateFood(food: Food): Boolean {
+        try {
+            foodRepository.save(food)
+            if (listFoodsCache.isNotEmpty()) {
+                val oldFood = listFoodsCache.find { return it.id == food.id }
+                listFoodsCache.remove(oldFood)
+                listFoodsCache.add(food)
+            }
             return true
         } catch (e: Exception) {
             return false
