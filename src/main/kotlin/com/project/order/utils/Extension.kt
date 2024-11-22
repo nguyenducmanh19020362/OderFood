@@ -9,20 +9,19 @@ import java.util.*
 object Extension {
     private const val MAX_RANDOM: Long = 100000000000000000L
     private const val MIN_RANDOM: Long = 10000000000000000L
+    private const val SECRET_NUMBER: Long = 135798671856L
     private val listRandom = mutableListOf<String>()
+    private val listSecretNumber = mutableListOf<String>()
 
     fun randomNumber(): String {
-        var randomNumber = ""
-        val random = Random()
-        if (listRandom.isEmpty()) {
-            randomNumber = (random.nextLong(MAX_RANDOM) + MIN_RANDOM).toString()
-            listRandom.add(randomNumber)
-        }
-        return randomNumber
+        val lastNumber = if (listRandom.isEmpty()) MIN_RANDOM else listRandom[listRandom.size - 1].toLong()
+        val newNumber = if (lastNumber < MAX_RANDOM) (lastNumber + SECRET_NUMBER).toString() else (MIN_RANDOM + SECRET_NUMBER).toString()
+        listRandom.add(newNumber)
+        return newNumber
     }
 
-    fun checkRandomNumber(randomNumber: String): Boolean {
-        return listRandom.remove(randomNumber)
+    fun checkSecretNumber(secretNumber: String): Boolean {
+        return listRandom.contains(secretNumber)
     }
 
     fun handleImage(nameFood: String, image: String): String {

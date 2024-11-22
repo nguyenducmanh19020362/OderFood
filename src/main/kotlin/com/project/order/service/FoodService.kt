@@ -4,7 +4,9 @@ import com.project.order.data.Food
 import com.project.order.jwt.JwtTokenProvider
 import com.project.order.responsitory.FoodRepository
 import com.project.order.service.base.BaseService
+import org.springframework.stereotype.Service
 
+@Service
 class FoodService(
     jwtTokenProvider: JwtTokenProvider,
     private val foodRepository: FoodRepository

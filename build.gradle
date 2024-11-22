@@ -40,6 +40,10 @@ dependencies {
 	implementation 'com.nimbusds:nimbus-jose-jwt:9.37.2'
 	//spring security
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+	//websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket:3.3.5'
+
 }
 
 kotlin {

@@ -29,6 +29,7 @@ class SecurityConfig {
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.authorizeHttpRequests { request ->
             request.requestMatchers(HttpMethod.POST, *publicEndpoints).permitAll()
+                .requestMatchers("/my-ws/**").permitAll()
                 .requestMatchers(HttpMethod.GET, *adminEndpoints).hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
         }

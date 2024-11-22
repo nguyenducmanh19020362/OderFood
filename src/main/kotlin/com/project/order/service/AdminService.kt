@@ -16,7 +16,6 @@ class AdminService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val adminRepository: AdminRepository)
 : BaseService(jwtTokenProvider) {
-
     fun login(adminRequestDto: AdminRequestDto): AdminResponseDto {
         val users: List<Admin> = adminRepository.findByUsername(adminRequestDto.username)
         var token = ""
@@ -59,7 +58,7 @@ class AdminService(
 
     fun generateToken(randomNumber: String): String {
         var token = ""
-        if (Extension.checkRandomNumber(randomNumber)) {
+        if (Extension.checkSecretNumber(randomNumber)) {
             token = jwtTokenProvider.generateJWTToken(
                 username = "none",
                 scope = Role.CUSTOMER.name
